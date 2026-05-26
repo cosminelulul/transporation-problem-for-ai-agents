@@ -179,6 +179,11 @@ python app.py
 
 Deschide browserul la `http://127.0.0.1:5000`.
 
+## 10. Licență
+
+Vezi [Licență](LICENSE)
+
+
 </details>
 
 ---
@@ -350,5 +355,9 @@ python app.py
 ```
 
 Open your browser at `http://127.0.0.1:5000`.
+
+## 10. License
+
+See [License](LICENSE)
 
 </details>
