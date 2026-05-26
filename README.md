@@ -173,7 +173,7 @@ Dacă `Σ capacitate ≠ Σ volum`, se adaugă automat un agent fictiv sau un ta
 
 ```bash
 pip install flask
-cd project_fixed
+cd program
 python app.py
 ```
 
@@ -345,7 +345,7 @@ If `Σ supply ≠ Σ demand`, a fictitious agent or task with cost 0 is added au
 
 ```bash
 pip install flask
-cd project_fixed
+cd program
 python app.py
 ```
 
