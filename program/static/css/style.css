@@ -1,0 +1,1019 @@
+:root {
+  --bg: #f8f9fa;
+  --panel: #ffffff;
+  --panel-2: #f1f5f9;
+  --accent: #16a34a;
+  --accent-light: #dcfce7;
+  --accent-2: #15803d;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --shadow: rgba(0, 0, 0, 0.08);
+  --header-bg: #15803d;
+  --header-text: #ffffff;
+  --table-head-bg: #15803d;
+  --table-head-text: #ffffff;
+  --table-alt: #f0fdf4;
+  --table-hover: #dcfce7;
+  --cell-active-bg: #d1fae5;
+  --cell-active-text: #065f46;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-border: #fca5a5;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+header {
+  background: var(--header-bg);
+  padding: 20px 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+header h1 {
+  font-size: 22px;
+  margin: 0;
+  color: var(--header-text);
+  letter-spacing: 0.3px;
+}
+
+main {
+  padding: 20px 48px 48px;
+  display: grid;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px var(--shadow);
+  padding: 20px 24px;
+  animation: fadeUp 0.4s ease both;
+}
+
+.section h2 {
+  margin: 0 0 16px;
+  font-size: 16px;
+  color: var(--accent-2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--accent-light);
+  padding-bottom: 8px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+button.secondary {
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+}
+
+button.secondary:hover {
+  background: var(--accent-light);
+}
+
+select, input {
+  background: var(--panel);
+  color: var(--text);
+  border: 1.5px solid var(--border-strong);
+  padding: 7px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+select:focus, input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+/* ===== COST TABLE (Matrice costuri) ===== */
+.table-box {
+  overflow-x: auto;
+  margin-top: 8px;
+}
+
+.table-box h3 {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid var(--border-strong);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cost-table thead tr:first-child th {
+  background: var(--table-head-bg);
+  color: var(--table-head-text);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Task group header spans all task columns */
+.cost-table thead tr:first-child th:first-child,
+.cost-table thead tr:first-child th:nth-child(2) {
+  background: #15803d;
+  text-align: left;
+}
+
+.cost-table thead tr:nth-child(2) th {
+  background: #166534;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 10px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.cost-table tbody tr.type-row td,
+.cost-table tbody tr.volume-row td {
+  background: #f0fdf4;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.cost-table tbody tr.type-row td:first-child,
+.cost-table tbody tr.type-row td:nth-child(2),
+.cost-table tbody tr.volume-row td:first-child,
+.cost-table tbody tr.volume-row td:nth-child(2) {
+  text-align: left;
+  font-weight: 700;
+  color: var(--text);
+  background: #e0f2fe;
+}
+
+.cost-table tbody tr.type-row input,
+.cost-table tbody tr.volume-row input {
+  text-align: center;
+  width: 100%;
+}
+
+.cost-table tbody tr.agent-row {
+  transition: background 0.1s;
+}
+
+.cost-table tbody tr.agent-row:nth-child(even) {
+  background: var(--table-alt);
+}
+
+.cost-table tbody tr.agent-row:hover {
+  background: var(--table-hover);
+}
+
+.cost-table tbody tr.agent-row td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.cost-table tbody tr.agent-row td:first-child,
+.cost-table tbody tr.agent-row td:nth-child(2) {
+  text-align: left;
+  font-weight: 600;
+}
+
+.cost-table input {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text);
+  padding: 4px 6px;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 70px;
+  transition: border-color 0.1s;
+}
+
+.cost-table input:focus {
+  border-color: var(--accent);
+  background: white;
+  box-shadow: 0 0 0 2px rgba(22,163,74,0.12);
+}
+
+.cost-table input.agent-name,
+.cost-table input.agent-capacity {
+  min-width: 90px;
+  text-align: left;
+}
+
+/* ===== RESULTS ===== */
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.result-card {
+  background: var(--panel-2);
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  min-height: 200px;
+}
+
+.result-card h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--accent-2);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.metric {
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+}
+
+.metric .label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 4px;
+}
+
+.metric .value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-2);
+}
+
+.conclusion-card {
+  margin-top: 12px;
+  background: linear-gradient(135deg, var(--accent-light), #f0fdf4);
+  border: 1.5px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--accent-2);
+  min-height: 40px;
+}
+
+.conclusion-card small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* Matrix table inside result cards */
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 12px;
+  border: 1px solid var(--border-strong);
+}
+
+.matrix-table th {
+  background: var(--table-head-bg);
+  color: #fff;
+  padding: 6px 10px;
+  text-align: center;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.matrix-table th:first-child {
+  text-align: left;
+}
+
+.matrix-table td {
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  text-align: right;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.matrix-table td:first-child {
+  text-align: left;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  background: #f8fafc;
+}
+
+.matrix-table tbody tr:nth-child(even) td {
+  background: var(--table-alt);
+}
+
+.matrix-table td.active-cell {
+  background: var(--cell-active-bg);
+  color: var(--cell-active-text);
+  font-weight: 700;
+}
+
+.result-note {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 8px;
+  line-height: 1.6;
+  padding: 8px;
+  background: #f8fafc;
+  border-radius: 6px;
+  border-left: 3px solid var(--border-strong);
+}
+
+/* ===== TABS ===== */
+footer { padding: 12px 48px 24px; color: var(--muted); font-size: 12px; }
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tabs .secondary { margin-left: auto; }
+
+.tab-btn {
+  background: transparent;
+  border: 1.5px solid var(--border-strong);
+  color: var(--muted);
+  padding: 8px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+}
+
+.tab-btn:hover:not(.active) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.hint { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+
+/* ===== ITERATIONS (Tablou Iterativ) ===== */
+.iterations-stack { display: flex; flex-direction: column; gap: 0; }
+
+.iteration-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.iteration-nav .nav-btn {
+  background: var(--panel);
+  border: 1.5px solid var(--border-strong);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 7px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.iteration-nav .nav-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.iteration-nav .nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.iteration-nav .iter-counter {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 6px 14px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.iteration-nav .iter-status {
+  font-size: 12px;
+  color: var(--accent-2);
+  font-weight: 600;
+  padding: 5px 12px;
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: 20px;
+}
+
+.iteration-display { display: block; }
+
+.iteration-card {
+  background: var(--panel);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.iteration-header {
+  background: #15803d;
+  color: white;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.iteration-header .iter-title { font-size: 15px; }
+
+.iteration-body { padding: 16px; }
+
+/* Simplex matrix table */
+.simplex-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-family: "JetBrains Mono", monospace;
+  border: 2px solid var(--border-strong);
+}
+
+.simplex-table th {
+  background: #15803d;
+  color: white;
+  padding: 7px 12px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.2);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.simplex-table th.row-label {
+  background: #15803d;
+  min-width: 80px;
+}
+
+.simplex-table td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: center;
+}
+
+.simplex-table td.row-label {
+  background: #f0f4f8;
+  font-weight: 700;
+  color: #166534;
+  text-align: left;
+}
+
+.simplex-table tbody tr:nth-child(even) td:not(.row-label) {
+  background: #f9fafb;
+}
+
+.simplex-table td.pivot-cell {
+  background: #fef3c7 !important;
+  color: #92400e;
+  font-weight: 700;
+  outline: 2px solid #f59e0b;
+  outline-offset: -2px;
+}
+
+.simplex-table tr.zj-row td {
+  background: #f0fdf4;
+  font-weight: 700;
+  color: #15803d;
+}
+
+.simplex-table tr.delta-row td {
+  background: #f0fdf4;
+  font-weight: 700;
+  color: #15803d;
+}
+
+.simplex-table tr.delta-row td.negative {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.simplex-table tr.cj-row td {
+  background: #fafafa;
+  color: var(--muted);
+  font-size: 11px;
+  border-bottom: 2px solid var(--border-strong);
+}
+
+.iter-pivot-info {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #92400e;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.iter-optimal-info {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
+/* ===== OVERLAY / MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+
+.modal-overlay.hidden { display: none; }
+
+.modal-box {
+  background: white;
+  border-radius: 14px;
+  padding: 28px 32px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  border: 2px solid var(--danger-border);
+  text-align: center;
+  animation: popIn 0.2s ease;
+}
+
+.modal-box.error { border-color: var(--danger-border); }
+.modal-box.warning { border-color: #fde68a; }
+.modal-box.info { border-color: var(--accent); }
+
+.modal-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.modal-title.error { color: var(--danger); }
+
+.modal-message {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 20px;
+  line-height: 1.6;
+}
+
+.modal-close {
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 9px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.modal-close.info { background: var(--accent); }
+.modal-close.warning { background: #d97706; }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1e293b;
+  color: white;
+  border: 1px solid #334155;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  z-index: 999;
+  opacity: 1;
+  font-size: 14px;
+  transition: opacity 0.3s ease;
+}
+
+.toast.hidden { opacity: 0; pointer-events: none; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  header, main, footer { padding-left: 16px; padding-right: 16px; }
+  .tabs .secondary { margin-left: 0; }
+}
+
+/* ===== RESPONSIVE TABLES - fit to screen ===== */
+.table-box {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Large tables: smaller cells */
+.cost-table.compact th,
+.cost-table.compact td {
+  padding: 4px 6px !important;
+  font-size: 11px !important;
+}
+
+.cost-table.compact input {
+  min-width: 40px !important;
+  font-size: 11px;
+  padding: 2px 4px;
+}
+
+.cost-table.compact input.agent-name,
+.cost-table.compact input.agent-capacity {
+  min-width: 60px !important;
+}
+
+/* Simplex table responsive */
+.simplex-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.simplex-table {
+  min-width: unset;
+  width: max-content;
+  max-width: 100%;
+}
+
+.simplex-table.compact th,
+.simplex-table.compact td {
+  padding: 3px 5px !important;
+  font-size: 10px !important;
+}
+
+.iteration-body {
+  overflow-x: auto;
+  padding: 12px;
+}
+
+/* ===== FIX: Remove blue bg from type-row / keep volume row only ===== */
+.cost-table tbody tr.volume-row td:first-child,
+.cost-table tbody tr.volume-row td:nth-child(2) {
+  background: #f0fdf4 !important;
+  color: var(--accent-2) !important;
+  font-weight: 700;
+}
+
+/* ===== COMPACT TABLE: scale font down further for 8+ tasks ===== */
+.cost-table.compact {
+  font-size: 17px !important;
+  table-layout: auto;
+  width: max-content;
+  max-width: 100%;
+}
+
+.cost-table.compact th,
+.cost-table.compact td {
+  padding: 5px 7px !important;
+  font-size: 17px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cost-table.compact input {
+  min-width: 51px !important;
+  width: 74px;
+  max-width: 74px;
+  font-size: 17px !important;
+  padding: 4px 5px;
+}
+
+.cost-table.compact input.agent-name,
+.cost-table.compact input.agent-capacity {
+  min-width: 85px !important;
+  width: 118px;
+  max-width: 135px;
+}
+
+/* ===== ITER SECTIONS (NV + Simplex stacked) ===== */
+.iter-section {
+  background: var(--panel);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.iter-section-header {
+  background: #15803d;
+  color: white;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.iter-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.iter-section-sub {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.iter-section-body {
+  padding: 16px;
+}
+
+/* ===== NV TABLE ===== */
+.nv-table th, .nv-table td {
+  min-width: 70px;
+}
+
+.nv-basic-cell {
+  background: #fef3c7 !important;
+  position: relative;
+}
+
+.nv-alloc {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  color: #92400e;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.nv-cost {
+  display: block;
+  font-size: 10px;
+  color: #b45309;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.nv-cost-only {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  font-family: "JetBrains Mono", monospace;
+}
+
+.supply-col {
+  background: #f0fdf4 !important;
+  font-weight: 700;
+  color: var(--accent-2) !important;
+  border-left: 2px solid var(--accent) !important;
+}
+
+.demand-row td {
+  background: #f0fdf4;
+  font-weight: 700;
+  color: var(--accent-2);
+  border-top: 2px solid var(--accent);
+}
+
+/* NV Steps */
+.nv-steps {
+  margin-top: 16px;
+  background: #fafafa;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.nv-steps-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-2);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 8px;
+}
+
+.nv-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nv-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.nv-step-num {
+  background: var(--accent);
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* NV Cost summary */
+.nv-cost-summary {
+  margin-top: 14px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nv-cost-item {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 160px;
+}
+
+.nv-cost-item .label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.nv-cost-item .value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.nv-cost-val { color: #b45309; }
+.opt-cost-val { color: var(--accent-2); }
+.imp-val { color: #1d4ed8; }
+
+/* ===== NV section: hide tablou iterativ simplex hint from old code ===== */
+.iter-section-body .hint { display: none; }
+
+/* ===== MODI iteration: u/v block ===== */
+.modi-uv-block {
+  background: #f0fdf4;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 7px 14px;
+  margin-bottom: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
+.modi-uv-label {
+  color: var(--accent-2);
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.modi-uv-vals {
+  color: var(--text);
+}
+
+/* ===== Zero cells in MODI table ===== */
+.simplex-table td.zero-cell {
+  color: #cbd5e1;
+}
+
+/* ===== Fix wide matrix table — max width + horizontal scroll ===== */
+.table-box {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cost-table {
+  min-width: max-content;
+  max-width: none;
+}
+
+/* For 8+ task scenarios: cap font-size aggressively */
+.cost-table.compact input.task-name {
+  max-width: 94px;
+  font-size: 12px !important;
+}
+
+/* Resultado matrix table — allow horizontal scroll */
+.result-card {
+  overflow-x: auto;
+}
+
+.matrix-table {
+  min-width: max-content;
+  font-size: 11px;
+}
+
+/* Compact matrix for large scenarios */
+.matrix-table.compact th,
+.matrix-table.compact td {
+  padding: 4px 6px;
+  font-size: 10px;
+}
