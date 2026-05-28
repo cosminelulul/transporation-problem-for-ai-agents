@@ -14,9 +14,6 @@ Agent  = Dict[str, Any]
 Task   = Dict[str, Any]
 
 
-# ──────────────────────────────────────────────────────────
-#  Validare
-# ──────────────────────────────────────────────────────────
 def validate_problem(agents, tasks, cost_matrix):
     errors = []
     if not agents:      errors.append("Agents list is empty")
@@ -34,9 +31,6 @@ def validate_problem(agents, tasks, cost_matrix):
     return errors
 
 
-# ──────────────────────────────────────────────────────────
-#  Normaliz & balans (intern)
-# ──────────────────────────────────────────────────────────
 def _normalize_problem(agents, tasks, cost_matrix):
     na = [{"id": a.get("id", f"A{i+1}"), "name": a.get("name", f"Agent {i+1}"),
            "capacity": float(a["capacity"])} for i, a in enumerate(agents)]
@@ -74,9 +68,6 @@ def _compute_cost(allocation, cost_matrix):
                for j in range(len(allocation[i])))
 
 
-# ──────────────────────────────────────────────────────────
-#  Alocare aleatoare
-# ──────────────────────────────────────────────────────────
 def _random_allocation_single(supply, demand):
     m, n = len(supply), len(demand)
     rs, rd = supply[:], demand[:]
@@ -115,16 +106,7 @@ def random_allocation_stats(agents, tasks, cost_matrix, runs=100):
     }
 
 
-# ──────────────────────────────────────────────────────────
-#  Rezolvare cu Metoda Potentialelor (MODI)  — via transport.py
-# ──────────────────────────────────────────────────────────
 def _solve_with_modi(supply, demand, cost_matrix):
-    """
-    Apeleaza rezolva_transport() din transport.py, care implementeaza:
-      1. Metoda Coltului N-V  (solutie initiala)
-      2. Metoda Potentialelor / MODI  (optimizare iterativa)
-    Returneaza structura compatibila cu restul aplicatiei.
-    """
     result = transport.rezolva_transport(supply, demand, cost_matrix)
 
     if result["status"] != "optimal":
@@ -177,10 +159,6 @@ def optimal_allocation(agents, tasks, cost_matrix):
     }
 
 
-# ──────────────────────────────────────────────────────────
-#  Construieste vizualizarea iteratiilor MODI
-#  Fiecare snapshot contine: x, c, J, u, v, delta, circuit, pq, theta
-# ──────────────────────────────────────────────────────────
 def _fmt(v):
     """Formateaza un numar (Fraction sau float) ca string compact."""
     try:
@@ -193,21 +171,6 @@ def _fmt(v):
 
 
 def _build_modi_visual(result):
-    """
-    Construieste lista de string-uri (cate unul per iteratie)
-    in formatul pe care parserul JS il asteapta:
-
-    ITERATIA  I_<k>
-    Pivot: linie=R coloana=C P=val   (sau 'fara pivot')
-    u: u1=... u2=... ...
-    v: v1=... v2=... ...
-    TABEL x / delta:
-    <m linii: CB  xij_name  xb_value  val0 val1 ...>
-    z_j ->  v1  v2  ...
-    Δ_j ->  d(i,j) ...
-    -> Intra in baza: x<p+1><q+1>
-    -> Iese din baza: x<ie+1><je+1>
-    """
     snaps = result["iterations"]
     m_orig = result["m_orig"]
     n_orig = result["n_orig"]
@@ -259,26 +222,16 @@ def _build_modi_visual(result):
             lines.append(f"v: {v_str}")
             lines.append("")
 
-        # Tabel MODI — afisam liniile bazice
-        # Formatul cerut de parser: CB  baseName  xb  val0 val1 ...
-        # Folosim: CB = c[i][j_bazic_pe_linia_i], base = x<i+1><j+1>, xb = x[i][j]
-        # Dar pentru MODI e mai natural sa afisam TOATA linia i a matricei x
-
-        # c_j header (valorile costurilor pe coloana j)
         cj_vals = "  ".join(_fmt(c[0][j]) for j in range(n)) if c else ""
         lines.append(f"c_j ->  {cj_vals}")
 
-        # Var names header
         var_names = [f"x{i+1}{j+1}" for i in range(m) for j in range(n)]
-        # Folosim x<row><col> per coloana, deci header coloane
         col_names = "  ".join(f"x{i+1}{j+1}" for i in range(m) for j in range(n))
-        # Simplificat: afisam coloane ca B1..Bn
         col_header = "  ".join(f"B{j+1}" for j in range(n))
         lines.append(f"       {col_header}")
         lines.append("")
 
         for i in range(m):
-            # Gasim celula bazica cu val maxima pe linia i (pentru CB)
             bazice_i = [(i, j) for (bi, j) in J if bi == i]
             if bazice_i:
                 cb_val = _fmt(c[i][bazice_i[0][1]])
@@ -294,16 +247,13 @@ def _build_modi_visual(result):
 
         lines.append("")
 
-        # z_j = v[j] (multiplicatorii destinatie)
         if v is not None:
             zj_str = "  ".join(_fmt(v[j]) for j in range(n))
             lines.append(f"z_j ->  {zj_str}")
 
-        # delta_j — pentru nebazice
         if delta is not None:
             delta_row = []
             for j in range(n):
-                # afisam delta celei mai reprezentative celule nebazice din coloana j
                 vals = [delta.get((i, j), None) for i in range(m) if (i, j) not in J]
                 best = next((d for d in vals if d is not None), None)
                 delta_row.append(_fmt(best) if best is not None else "·")
@@ -314,7 +264,6 @@ def _build_modi_visual(result):
             p_, q_ = pq
             lines.append(f"-> Intra in baza: x{p_+1}{q_+1}")
             if circuit and len(circuit) >= 3:
-                # celula iesita = primul rang impar al circuitului
                 out_cell = circuit[1]
                 oi, oj = out_cell
                 lines.append(f"-> Iese din baza: x{oi+1}{oj+1}")
@@ -329,9 +278,6 @@ def _build_modi_visual(result):
     return visuals
 
 
-# ──────────────────────────────────────────────────────────
-#  Graf
-# ──────────────────────────────────────────────────────────
 def build_graph_data(agents, tasks, allocation, cost_matrix):
     nodes, edges = [], []
     for t in tasks:
@@ -347,9 +293,7 @@ def build_graph_data(agents, tasks, allocation, cost_matrix):
     return {"nodes": nodes, "edges": edges}
 
 
-# ──────────────────────────────────────────────────────────
-#  Comparare
-# ──────────────────────────────────────────────────────────
+
 def compare_allocations(agents, tasks, cost_matrix):
     agents_n, tasks_n, costs_n = _normalize_problem(agents, tasks, cost_matrix)
 
