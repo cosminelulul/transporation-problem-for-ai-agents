@@ -1,33 +1,6 @@
 import copy
 from fractions import Fraction
 
-# ============================================================
-#  Constante aparenta
-# ============================================================
-A_Settings = {
-    "BG_DARK"        : "#1A1A1B",
-    "BG_PANEL"       : "#111112",
-    "BG_CARD"        : "#252527",
-    "BG_INPUT"       : "#2E2E30",
-    "BG_HEADER"      : "#1F1F21",
-    "ACCENT"         : "#7B68EE",
-    "ACCENT2"        : "#45454E",
-    "GREEN"          : "#3ecf8e",
-    "RED"            : "#f75f5f",
-    "YELLOW"         : "#f7c948",
-    "TEXT_MAIN"      : "#F6E8E8",
-    "TEXT_DIM"       : "#D1DCDF",
-    "TEXT_HEAD"      : "#F4CDCD",
-    "MONO_FONT"      : ("Consolas", 12),
-    "MONO_BIG"       : ("Consolas", 13),
-    "TITLE_FONT"     : ("Segoe UI", 15, "bold"),
-    "LABEL_FONT"     : ("Segoe UI", 14),
-    "BTN_FONT"       : ("Segoe UI", 12, "bold"),
-    "GRID_HDR_FONT"  : ("Segoe UI", 13, "bold"),
-    "GRID_LABEL_FONT": ("Segoe UI", 13, "bold"),
-    "GRID_ENTRY_FONT": ("Consolas", 13),
-    "SPINBOX_FONT"   : ("Segoe UI", 14),
-}
 
 def F(x):
     if isinstance(x, Fraction):
