@@ -29,9 +29,6 @@ A_Settings = {
     "SPINBOX_FONT"   : ("Segoe UI", 14),
 }
 
-# ============================================================
-#  Utilitare Fraction
-# ============================================================
 def F(x):
     if isinstance(x, Fraction):
         return x
@@ -47,14 +44,9 @@ def fmt(v):
     return f"{v.numerator}/{v.denominator}"
 
 
-# ============================================================
-#  PAS 1 – Echilibrare
-# ============================================================
+
 def echilibreaza(a, b, c):
-    """
-    Returneaza (a', b', c') echilibrate (sum a' == sum b'),
-    plus fictiva_sursa (bool) si fictiva_dest (bool).
-    """
+
     a = [F(x) for x in a]
     b = [F(x) for x in b]
     c = [list(map(F, row)) for row in c]
@@ -82,14 +74,9 @@ def echilibreaza(a, b, c):
     return a, b, c, fictiva_sursa, fictiva_dest
 
 
-# ============================================================
-#  PAS 2 – Metoda Coltului N-V  (solutie de baza initiala)
-# ============================================================
+
 def metoda_NV(a, b):
-    """
-    Returneaza x (matrice m x n) si multimea celulelor bazice J.
-    a, b sunt copii mutabile (le vom modifica).
-    """
+
     m = len(a)
     n = len(b)
     a = list(a)
@@ -121,16 +108,12 @@ def metoda_NV(a, b):
     return x, J
 
 
-# ============================================================
-#  PAS 3 – Costul total al solutiei curente
-# ============================================================
+
 def cost_total(x, c, J):
     return sum(c[i][j] * x[i][j] for (i, j) in J)
 
 
-# ============================================================
-#  PAS 4 – Calculul multiplicatorilor u, v  (sistemul S)
-# ============================================================
+
 def calculeaza_uv(c, J, m, n):
     """
     Rezolva sistemul  u[i] + v[j] = c[i][j]  pentru (i,j) in J.
@@ -157,9 +140,7 @@ def calculeaza_uv(c, J, m, n):
     return u, v
 
 
-# ============================================================
-#  PAS 5 – Costurile modificate delta[i][j]
-# ============================================================
+
 def calculeaza_delta(c, u, v, J, m, n):
     J_set = set(J)
     delta = {}
@@ -170,15 +151,9 @@ def calculeaza_delta(c, u, v, J, m, n):
     return delta
 
 
-# ============================================================
-#  PAS 7 – Circuitul (ciclul) pentru celula (p, q)
-# ============================================================
+
 def gaseste_circuit(p, q, J):
-    """
-    Construieste ciclul care porneste din (p,q), trece prin celule
-    din J si revine in (p,q). Returneaza lista ordonata de celule
-    (inclusiv (p,q) la inceput), sau None daca nu exista.
-    """
+
     J_set = set(J) | {(p, q)}
 
     def dfs(path, last_dir):
@@ -211,11 +186,6 @@ def gaseste_circuit(p, q, J):
 
 
 def gaseste_circuit_v2(p, q, J):
-    """
-    Varianta iterativa (BFS pe graful bipartit linie-coloana).
-    Returneaza lista de celule ale ciclului (fara duplicarea startului),
-    sau None.
-    """
     # celule disponibile (bazice + (p,q))
     celule = set(J) | {(p, q)}
 
@@ -271,19 +241,8 @@ def gaseste_circuit_v2(p, q, J):
     return None
 
 
-# ============================================================
-#  Algoritm principal: rezolva_transport
-# ============================================================
 def rezolva_transport(a_in, b_in, c_in):
-    """
-    Returneaza un dict cu:
-      status       : 'optimal' | 'error'
-      iterations   : lista de snapshot-uri
-      x_opt        : matricea optima (m_orig x n_orig)
-      f_opt        : valoarea optima
-      fictiva_sursa, fictiva_dest : bool
-      m_orig, n_orig, m, n
-    """
+
     m_orig = len(a_in)
     n_orig = len(c_in[0]) if c_in else 0
 
@@ -443,9 +402,7 @@ def _make_snap(k, x, c, J, a, b, m, n, fk,
     }
 
 
-# ============================================================
-#  Constructia textului pentru un snapshot (iteratie)
-# ============================================================
+
 def build_snap_text(snap, fictiva_sursa, fictiva_dest, m_orig, n_orig):
     m = snap['m']
     n = snap['n']
@@ -465,20 +422,17 @@ def build_snap_text(snap, fictiva_sursa, fictiva_dest, m_orig, n_orig):
 
     linii = []
 
-    # ---- Header iteratie ----
     total_w = 70
     linii.append(f"\n  ╔{'='*total_w}╗")
     linii.append(f"  ║   ITERATIA  I_{k}   —   {snap['msg']}".ljust(total_w+4) + "║")
     linii.append(f"  ╚{'='*total_w}╝\n")
 
-    # ---- Tabelul de transport ----
-    # Latimi coloane
+
     CW = 8  # latime celula
 
     def cell(val, w=CW):
         return str(val).center(w)
 
-    # etichete surse/destinatii
     src_lbl = [f"A{i+1}" for i in range(m)]
     dst_lbl = [f"B{j+1}" for j in range(n)]
     if fictiva_sursa:
@@ -486,7 +440,6 @@ def build_snap_text(snap, fictiva_sursa, fictiva_dest, m_orig, n_orig):
     if fictiva_dest:
         dst_lbl[-1] = f"B{n}*"
 
-    # header coloana
     hdr = "  " + "A\\B".center(6)
     for j in range(n):
         hdr += cell(dst_lbl[j])
@@ -509,7 +462,6 @@ def build_snap_text(snap, fictiva_sursa, fictiva_dest, m_orig, n_orig):
         row_str += cell(fmt(a[i]), 6)
         linii.append(row_str)
 
-    # rand necesare
     linii.append("  " + "-" * (6 + n * CW + 6))
     nec_str = "  " + "N".center(6)
     for j in range(n):
@@ -517,18 +469,15 @@ def build_snap_text(snap, fictiva_sursa, fictiva_dest, m_orig, n_orig):
     linii.append(nec_str)
     linii.append("")
 
-    # ---- Costul curent ----
     linii.append(f"  f_k = {fmt(fk)}")
     linii.append("")
 
-    # ---- Componente bazice / nebazice ----
     bazice  = sorted(J)
     nebazice = [(i, j) for i in range(m) for j in range(n) if (i, j) not in J]
     linii.append(f"  Celule bazice  (NC = {len(bazice)},  V = m+n-1 = {m}+{n}-1 = {m+n-1}):")
     linii.append("  " + "  ".join(f"x{i+1}{j+1}={fmt(x[i][j])}" for (i,j) in bazice))
     linii.append("")
 
-    # ---- Sistemul S si multiplicatorii u, v ----
     if u is not None:
         linii.append("  Sistemul S  (u[i] + v[j] = c[i][j]  pentru (i,j) bazice):")
         linii.append(f"  u[1] = 0  (conventie)")
@@ -541,7 +490,6 @@ def build_snap_text(snap, fictiva_sursa, fictiva_dest, m_orig, n_orig):
         linii.append(f"     {v_str}")
         linii.append("")
 
-    # ---- Tabelul costurilor modificate c~ij ----
     if u is not None and v is not None:
         linii.append("  Tabel c~[i][j] = u[i] + v[j]  si  delta[i][j] = c[i][j] - c~[i][j]:")
         # header
@@ -562,7 +510,6 @@ def build_snap_text(snap, fictiva_sursa, fictiva_dest, m_orig, n_orig):
             linii.append(row_s)
         linii.append("")
 
-    # ---- Criteriul de optimalitate ----
     if delta is not None:
         neg = [(cell, d) for cell, d in delta.items() if d < F(0)]
         if snap['status'] == 'optimal':
@@ -572,7 +519,6 @@ def build_snap_text(snap, fictiva_sursa, fictiva_dest, m_orig, n_orig):
             for (ci, cj), d in sorted(neg):
                 linii.append(f"      delta[{ci+1},{cj+1}] = {fmt(d)}")
 
-    # ---- Circuit ----
     if circuit is not None and pq is not None:
         p, q = pq
         linii.append("")
@@ -585,9 +531,7 @@ def build_snap_text(snap, fictiva_sursa, fictiva_dest, m_orig, n_orig):
     return "\n".join(linii)
 
 
-# ============================================================
-#  Textul solutiei finale
-# ============================================================
+
 def build_sol_text(result):
     if result['status'] != 'optimal':
         return "  ❌  Nu s-a gasit solutia optima."
